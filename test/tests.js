@@ -6,26 +6,30 @@ describe('timer', function () {
 
 	describe('datetime', function () {
 
-		describe('hash test', function () {
+		var stringify = function (obj) {
+			return typeof obj === 'object' ? JSON.stringify(obj) : obj;
+		}
 
-			var test = function (func, tests) {
+		var test = function (func, tests) {
 
-				tests.forEach(function (test) {
-					it('should return ' + test[1] + ' for ' + test[0], function () {
-						expect(func.apply(undefined, test[0])).to.equal(test[1]);
-					});
+			tests.forEach(function (test) {
+				it('should return ' + stringify(test[1]) + ' for ' + stringify(test[0]), function () {
+					expect(func.apply(undefined, test[0])).to.deep.equal(test[1]);
 				});
-			};
+			});
+		};
+
+		describe('hash test', function () {
 
 			describe('isDhms', function () {
 
 				var isDhmsTest = [
 					[['1s'], true],
-					[['2m'], true],
-					[['3h'], true],
+					[['22m'], true],
+					[['23h'], true],
 					[['4d'], true],
-					[['1d2h3m4s'], true],
-					[['1s2m3h4d'], false],
+					[['1d12h3m4s'], true],
+					[['1s2m13h4d'], false],
 					[['nonsense'], false]
 				];
 
@@ -57,5 +61,20 @@ describe('timer', function () {
 				test(Datetime.isCount, isCountTest);
 			});
 		});
+
+		describe('hash parse', function () {
+
+			describe('parseDhms', function () {
+
+				var parseDhmsTest = [
+					[['5s'], {day:0,hour:0,minute:0,second:5}],
+					[['10d14h59m0s'], {day:10,hour:14,minute:59,second:0}],
+					[['1s2m13h4d'], null]
+				];
+
+				test(Datetime.parseDhms, parseDhmsTest);
+			});
+		});
+
 	});
 });
