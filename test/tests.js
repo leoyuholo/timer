@@ -149,7 +149,7 @@ describe('timer', function () {
 
 	});
 
-	describe.only('Timer', function () {
+	describe('Timer', function () {
 
 		describe('constructor', function () {
 
@@ -186,20 +186,47 @@ describe('timer', function () {
 
 			this.timeout(5000);
 
-			it('should call callback exactly once after 2000ms', function (done) {
+			it('should call end event listener exactly once after 2000ms', function (done) {
 				var timer = new Timer(2000, function (timer) {
 					expect(timer._.remain).to.be.at.most(0);
 					done();
 				});
 			});
 
-			it('should call callback every 1000ms', function (done) {
-				var cnt = 0,
+			it('should call update event listener every 1000ms', function (done) {
+				var called = 0,
 					timer = new Timer(null, null, function (timer) {
-						expect(Math.round(timer._.elapsed / 1000)).to.equal(cnt);
-						if (cnt++ >= 3)
+						expect(Math.round(timer._.elapsed / 1000)).to.equal(called);
+						if (called++ >= 3)
 							done();
 					});
+			});
+		});
+
+		describe('destroy', function () {
+
+			this.timeout(5000);
+
+			it('should not call end event listener after destroy', function (done) {
+				var called = 0,
+					timer = new Timer(2000, function (timer) {
+						expect(++called).to.equal(0);
+					});
+				timer.destroy();
+				setTimeout(function () {
+					done();
+				}, 2500);
+			});
+
+			it('should not call update event listener after destroy', function (done) {
+				var called = 0,
+					timer = new Timer(null, null, function (timer) {
+						expect(++called).to.equal(1);
+					});
+				timer.destroy();
+				setTimeout(function () {
+					done();
+				}, 1500);
 			});
 		});
 	});

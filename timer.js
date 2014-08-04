@@ -49,6 +49,10 @@
 		updateTimer(this);
 	};
 
+	Timer.prototype.destroy = function() {
+		clearTimeout(this._.timeout);
+	};
+
 	// TODO: export to module.exports for node.js compatibility
 	root.Timer = Timer;
 }.call(this));
