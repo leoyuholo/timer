@@ -22,7 +22,7 @@
 				hour: res[2] ? +res[2] : 0,
 				minute: res[3] ? +res[3] : 0,
 				second: res[4] ? +res[4] : 0
-			}
+			};
 		}
 	};
 
@@ -83,7 +83,7 @@
 				year: res[7] ? +res[7] : null
 			};
 		}
-	}
+	};
 
 	Datetime.countRegex = /^(\d+)$/;
 

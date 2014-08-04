@@ -148,4 +148,46 @@ describe('timer', function () {
 		});
 
 	});
+
+	describe.only('Timer', function () {
+
+		describe('constructor', function () {
+
+			it('should be instantiated with default options', function () {
+				var timer = new Timer();
+
+				expect(timer._.now).to.within(Date.now() - 2, Date.now() + 2);
+				expect(timer._.start).to.within(Date.now() - 2, Date.now() + 2);
+				expect(timer._.end).to.equal(0);
+				expect(timer._.frequency).to.equal(1000);
+				expect(timer._.events).to.be.empty;
+			});
+			
+			it('should be instantiated with customized options', function () {
+				var options = {
+					frequency: 500,
+					events: {
+						tick: function (timer) {},
+						end: function (timer) {}
+					}
+				}, timer = new Timer(options);
+
+				expect(timer._.frequency).to.equal(options.frequency);
+				expect(timer._.events).to.deep.equal(options.events);
+			});
+
+			it('should be instantiated with end as 1000ms later', function () {
+				var timer = new Timer(1000);
+
+				expect(timer._.end).to.within(Date.now() + 1000 - 2, Date.now() + 1000 + 2);
+			});
+
+			it('should be instantiated with end as ' + Datetime.makeDatetime('1030am6Aug2030'), function () {
+				var end = Datetime.makeDatetime('1030am6Aug2030'),
+					timer = new Timer(end);
+
+				expect(timer._.end).to.within(end.getTime() - 2, end.getTime() + 2);
+			});
+		});
+	});
 });
