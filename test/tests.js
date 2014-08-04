@@ -1,6 +1,6 @@
 var expect = chai.expect;
 
-var Datetime = timer.Datetime
+var Datetime = timer.Datetime;
 
 describe('timer', function () {
 
@@ -8,35 +8,53 @@ describe('timer', function () {
 
 		describe('hash test', function () {
 
+			var test = function (func, tests) {
+
+				tests.forEach(function (test) {
+					it('should return ' + test[1] + ' for ' + test[0], function () {
+						expect(func.apply(undefined, test[0])).to.equal(test[1]);
+					});
+				});
+			};
+
 			describe('isDhms', function () {
 
-				it('should return true for "1s"', function () {
-					expect(Datetime.isDhms('1s')).to.be.true;
-				});
+				var isDhmsTest = [
+					[['1s'], true],
+					[['2m'], true],
+					[['3h'], true],
+					[['4d'], true],
+					[['1d2h3m4s'], true],
+					[['1s2m3h4d'], false],
+					[['nonsense'], false]
+				];
 
-				it('should return true for "2m"', function () {
-					expect(Datetime.isDhms('2m')).to.be.true;
-				});
+				test(Datetime.isDhms, isDhmsTest);
+			});
 
-				it('should return true for "3h"', function () {
-					expect(Datetime.isDhms('3h')).to.be.true;
-				});
+			describe('isDt', function () {
 
-				it('should return true for "4d"', function () {
-					expect(Datetime.isDhms('4d')).to.be.true;
-				});
+				var isDtTest = [
+					[['10am'], true],
+					[['1010am'], true],
+					[['9pm'], true],
+					[['930am6Jul2014'], true],
+					[['1930am6Jul2014'], false],
+					[['nonsense'], false]
+				];
 
-				it('should return true for "1d2h3m4s"', function () {
-					expect(Datetime.isDhms('1d2h3m4s')).to.be.true;
-				});
+				test(Datetime.isDt, isDtTest);
+			});
 
-				it('should return false for "nonsense"', function () {
-					expect(Datetime.isDhms('nonsense')).to.be.false;
-				});
+			describe('isCount', function () {
 
-				it('should return false for "1s2m3h4d"', function () {
-					expect(Datetime.isDhms('1s2m3h4d')).to.be.false;
-				});
+				var isCountTest = [
+					[['1'], true],
+					[['2345'], true],
+					[['nonsense'], false]
+				];
+
+				test(Datetime.isCount, isCountTest);
 			});
 		});
 	});
