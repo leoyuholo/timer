@@ -110,9 +110,6 @@
 	};
 
 	Datetime.makeDatetime = function (s) {
-		if (!Datetime.isParsable(s)) {
-			return null;
-		}
 
 		if (Datetime.isCount(s)) {
 			return new Date(60 * Datetime.parseCount(s));
