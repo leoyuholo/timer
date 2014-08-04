@@ -1,6 +1,27 @@
 (function () {
 	var root = this;
 
+	var updateTimer = function (timer) {
+		var _ = timer._;
+
+		_.now = Date.now();
+		_.remain = _.end - _.now;
+		_.elapsed = _.now - _.start;
+
+		var trigger = function (listener) {
+			listener.call(null, timer);
+		};
+
+		_.events.update.forEach(trigger);
+
+		if (_.end <= _.now) {
+			_.events.end.forEach(trigger);
+			_.events.end = [];
+		}
+
+		_.timeout = setTimeout(function () {updateTimer(timer);}, _.frequency - (_.elapsed % _.frequency));
+	};
+
 	var Timer = function (end, endCb, updateCb) {
 		var _ = {
 			now: Date.now(),
@@ -24,6 +45,8 @@
 			_.events.update.push(updateCb);
 
 		this._ = _;
+
+		updateTimer(this);
 	};
 
 	// TODO: export to module.exports for node.js compatibility

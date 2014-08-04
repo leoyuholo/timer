@@ -6,7 +6,7 @@ describe('timer', function () {
 
 		var stringify = function (obj) {
 			return typeof obj === 'object' ? JSON.stringify(obj) : obj;
-		}
+		};
 
 		var test = function (func, tests) {
 
@@ -140,7 +140,7 @@ describe('timer', function () {
 					[['1d12h3m4s'], new Date(129784000)],
 					[['930am6Aug2014'], new Date(2014, 7, 6, 9, 30)],
 					[['930am6Aug'], new Date(now.getFullYear(), 7, 6, 9, 30)],
-					[['930am'], new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 30) < now ? new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 9, 30) : new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 30)],
+					[['930am'], new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 30) < now ? new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 9, 30) : new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 30)]
 				];
 
 				test(Datetime.makeDatetime, makeDatetimeTest);
@@ -179,6 +179,27 @@ describe('timer', function () {
 				expect(timer._.end).to.within(end.getTime() - 2, end.getTime() + 2);
 				expect(timer._.events.end).to.include(endCb);
 				expect(timer._.events.update).to.include(updateCb);
+			});
+		});
+
+		describe('event listeners', function () {
+
+			this.timeout(5000);
+
+			it('should call callback exactly once after 2000ms', function (done) {
+				var timer = new Timer(2000, function (timer) {
+					expect(timer._.remain).to.be.at.most(0);
+					done();
+				});
+			});
+
+			it('should call callback every 1000ms', function (done) {
+				var cnt = 0,
+					timer = new Timer(null, null, function (timer) {
+						expect(Math.round(timer._.elapsed / 1000)).to.equal(cnt);
+						if (cnt++ >= 3)
+							done();
+					});
 			});
 		});
 	});
