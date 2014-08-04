@@ -1,7 +1,5 @@
 var expect = chai.expect;
 
-var Datetime = timer.Datetime;
-
 describe('timer', function () {
 
 	describe('datetime', function () {
