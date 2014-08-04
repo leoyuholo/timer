@@ -54,7 +54,7 @@
 	Datetime.parseDt = function (s) {
 		var res = Datetime.dtRegex.exec(s);
 
-		if(null === res) {
+		if (null === res) {
 			return null;
 		} else {
 			return {
@@ -72,6 +72,16 @@
 
 	Datetime.isCount = function (s) {
 		return Datetime.countRegex.test(s);
+	};
+
+	Datetime.parseCount = function (s) {
+		var res = Datetime.countRegex.exec(s);
+
+		if (null === res) {
+			return null;
+		} else {
+			return +res[1];
+		}
 	};
 
 	timer.Datetime = Datetime;

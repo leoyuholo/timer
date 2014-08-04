@@ -85,6 +85,17 @@ describe('timer', function () {
 
 				test(Datetime.parseDt, parseDtTest);
 			});
+
+			describe('parseCount', function () {
+
+				var parseCountTest = [
+					[['5'], 5],
+					[['123'], 123],
+					[['nonsense'], null]
+				];
+
+				test(Datetime.parseCount, parseCountTest);
+			});
 		});
 
 	});
