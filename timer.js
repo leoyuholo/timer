@@ -36,6 +36,38 @@
 		return Datetime.dtRegex.test(s);
 	};
 
+	var monthMapping = {
+		'jan': 0,
+		'feb': 1,
+		'mar': 2,
+		'apr': 3,
+		'may': 4,
+		'jun': 5,
+		'jul': 6,
+		'aug': 7,
+		'sep': 8,
+		'oct': 9,
+		'nov': 10,
+		'dev': 11
+	};
+
+	Datetime.parseDt = function (s) {
+		var res = Datetime.dtRegex.exec(s);
+
+		if(null === res) {
+			return null;
+		} else {
+			return {
+				hour: +res[1] + ('pm' === res[4] ? 12 : 0),
+				minute: res[2] ? +res[2] : 0,
+				second: res[3] ? +res[3] : 0,
+				day: res[5] ? +res[5] : null,
+				month: res[6] ? monthMapping[res[6].substring(0, 3).toLowerCase()] : null,
+				year: res[7] ? +res[7] : res[5] ? new Date().getFullYear() : null
+			};
+		}
+	}
+
 	Datetime.countRegex = /^(\d+)$/;
 
 	Datetime.isCount = function (s) {

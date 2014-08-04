@@ -14,6 +14,7 @@ describe('timer', function () {
 
 			tests.forEach(function (test) {
 				it('should return ' + stringify(test[1]) + ' for ' + stringify(test[0]), function () {
+					// console.log(func.apply(undefined, test[0]));
 					expect(func.apply(undefined, test[0])).to.deep.equal(test[1]);
 				});
 			});
@@ -73,6 +74,16 @@ describe('timer', function () {
 				];
 
 				test(Datetime.parseDhms, parseDhmsTest);
+			});
+
+			describe('parseDt', function () {
+
+				var parseDtTest = [
+					[['930am6Jul2014'], {year:2014,month:6,day:6,hour:9,minute:30,second:0}],
+					[['nonsense'], null]
+				];
+
+				test(Datetime.parseDt, parseDtTest);
 			});
 		});
 
