@@ -229,7 +229,7 @@ describe('timer', function () {
 				expect(endCbStub).to.be.calledOnce;
 			});
 
-			it('should call update event listener every 1000ms', function (done) {
+			it('should call update event listener every 1000ms', function () {
 				var updateCbStub = sinon.stub(),
 					timer = new Timer(null, null, updateCbStub);
 
@@ -275,40 +275,95 @@ describe('timer', function () {
 
 		describe('dispatch', function () {
 
-			var countUpStub,
-				countToStub;
+			var updateNowStub,
+				countUpStub,
+				countToStub,
+				hashErrorStub,
+				oldTimerStub,
+				timerStub;
 
 			beforeEach(function () {
+				updateNowStub = sinon.stub(app, 'updateNow');
 				countUpStub = sinon.stub(app, 'countUp');
 				countToStub = sinon.stub(app, 'countTo');
+				hashErrorStub = sinon.stub(app, 'hashError');
+				oldTimerStub = sinon.createStubInstance(Timer);
+				app.timer = oldTimerStub;
+				timerStub = sinon.stub(root, 'Timer');
 			});
 
 			afterEach(function () {
+				updateNowStub.restore();
 				countUpStub.restore();
 				countToStub.restore();
+				hashErrorStub.restore();
+				delete app.timer;
+				timerStub.restore();
+			});
+
+			it('should destroy existing timer', function () {
+				app.dispatch('');
+
+				expect(oldTimerStub.destroy).to.be.calledOnce;
+				expect(oldTimerStub.destroy.firstCall.args).to.be.empty;
 			});
 
 			it('should dispatch to countUp', function () {
 				app.dispatch('');
 
-				expect(countUpStub).to.have.be.calledOnce;
-				expect(countToStub).to.have.not.be.called;
+				expect(oldTimerStub.destroy).to.be.calledOnce;
+				expect(oldTimerStub.destroy.firstCall.args).to.be.empty;
+				
+				expect(timerStub).to.be.calledOnce;
+				expect(timerStub).to.be.calledWithNew;
+				expect(timerStub.firstCall).to.be.calledWith(null, null, countUpStub);
 			});
 
-			it('should dispatch to countTo with now plus dhms', function () {
+			it('should dispatch to countTo with dhms', function () {
 				app.dispatch('1m2s');
 
-				expect(countToStub).to.have.be.calledOnce;
-				expect(countToStub.getCall(0).args[0].getTime()).to.within(Date.now() + Datetime.makeDatetime('1m2s').getTime() - 2, Date.now() + Datetime.makeDatetime('1m2s').getTime() + 2);
-				expect(countUpStub).to.have.not.be.called;
+				expect(oldTimerStub.destroy).to.be.calledOnce;
+				expect(oldTimerStub.destroy.firstCall.args).to.be.empty;
+
+				expect(timerStub).to.have.be.calledOnce;
+				expect(timerStub).to.be.calledWithNew;
+				expect(timerStub.firstCall).to.be.calledWith(Datetime.makeDatetime('1m2s').getTime(), countToStub, updateNowStub);
 			});
 
 			it('should dispatch to countTo with dt', function () {
 				app.dispatch('630am8Aug2014');
 
-				expect(countToStub).to.have.be.calledOnce;
-				expect(countToStub.getCall(0).args[0]).to.deep.equal(Datetime.makeDatetime('630am8Aug2014'));
-				expect(countUpStub).to.have.not.be.called;
+				expect(oldTimerStub.destroy).to.be.calledOnce;
+				expect(oldTimerStub.destroy.firstCall.args).to.be.empty;
+
+				expect(timerStub).to.have.be.calledOnce;
+				expect(timerStub).to.be.calledWithNew;
+				expect(timerStub.firstCall).to.be.calledWith(Datetime.makeDatetime('630am8Aug2014'), countToStub, updateNowStub);
+			});
+
+			it('should dispatch to countTo with count', function () {
+				app.dispatch('5');
+
+				expect(oldTimerStub.destroy).to.be.calledOnce;
+				expect(oldTimerStub.destroy.firstCall.args).to.be.empty;
+
+				expect(timerStub).to.have.be.calledOnce;
+				expect(timerStub).to.be.calledWithNew;
+				expect(timerStub.firstCall).to.be.calledWith(5 * 360000, countToStub, updateNowStub);
+			});
+
+			it('should dispatch to hashError', function () {
+				app.dispatch('nonsense');
+
+				expect(oldTimerStub.destroy).to.be.calledOnce;
+				expect(oldTimerStub.destroy.firstCall.args).to.be.empty;
+
+				expect(timerStub).to.have.be.calledOnce;
+				expect(timerStub).to.be.calledWithNew;
+				expect(timerStub.firstCall).to.be.calledWith(null, null, updateNowStub);
+
+				expect(hashErrorStub).to.have.be.calledOnce;
+				expect(hashErrorStub).to.be.calledWith('nonsense');
 			});
 		});
 	});
