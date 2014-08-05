@@ -173,6 +173,16 @@ describe('timer', function () {
 
 	describe('Timer', function () {
 
+		var clock;
+
+		before(function () {
+			clock = sinon.useFakeTimers();
+		});
+
+		after(function () {
+			clock.restore();
+		});
+
 		describe('constructor', function () {
 
 			it('should be instantiated with default properties', function () {
@@ -213,6 +223,8 @@ describe('timer', function () {
 					expect(timer._.remain).to.be.at.most(0);
 					done();
 				});
+
+				clock.tick(4999);
 			});
 
 			it('should call update event listener every 1000ms', function (done) {
@@ -222,6 +234,8 @@ describe('timer', function () {
 						if (called++ >= 3)
 							done();
 					});
+
+				clock.tick(4999);
 			});
 		});
 
@@ -238,6 +252,8 @@ describe('timer', function () {
 				setTimeout(function () {
 					done();
 				}, 2500);
+
+				clock.tick(4999);
 			});
 
 			it('should not call update event listener after destroy', function (done) {
@@ -249,6 +265,8 @@ describe('timer', function () {
 				setTimeout(function () {
 					done();
 				}, 1500);
+
+				clock.tick(4999);
 			});
 		});
 	});
