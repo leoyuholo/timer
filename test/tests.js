@@ -190,18 +190,18 @@ describe('timer', function () {
 			it('should be instantiated with default properties', function () {
 				var timer = new Timer();
 
-				expect(timer._.now).to.within(Date.now() - 2, Date.now() + 2);
-				expect(timer._.start).to.within(Date.now() - 2, Date.now() + 2);
-				expect(timer._.end).to.equal(0);
-				expect(timer._.frequency).to.equal(1000);
+				expect(timer.now).to.within(Date.now() - 2, Date.now() + 2);
+				expect(timer.start).to.within(Date.now() - 2, Date.now() + 2);
+				expect(timer.end).to.equal(0);
+				expect(timer.frequency).to.equal(1000);
 			});
 
 			it('should be instantiated with end as now plus 1000ms', function () {
 				var endCb = function (timer) {},
 					timer = new Timer(1000, endCb);
 
-				expect(timer._.end).to.within(Date.now() + 1000 - 2, Date.now() + 1000 + 2);
-				expect(timer._.events.end).to.include(endCb);
+				expect(timer.end).to.within(Date.now() + 1000 - 2, Date.now() + 1000 + 2);
+				expect(timer.events.end).to.include(endCb);
 			});
 
 			it('should be instantiated with end as ' + Datetime.makeDatetime('1030am6Aug2030'), function () {
@@ -210,9 +210,9 @@ describe('timer', function () {
 					updateCb = function (timer) {},
 					timer = new Timer(end, endCb, updateCb);
 
-				expect(timer._.end).to.within(end.getTime() - 2, end.getTime() + 2);
-				expect(timer._.events.end).to.include(endCb);
-				expect(timer._.events.update).to.include(updateCb);
+				expect(timer.end).to.within(end.getTime() - 2, end.getTime() + 2);
+				expect(timer.events.end).to.include(endCb);
+				expect(timer.events.update).to.include(updateCb);
 			});
 		});
 
@@ -222,7 +222,7 @@ describe('timer', function () {
 
 			it('should call end event listener exactly once after 2000ms', function (done) {
 				var timer = new Timer(2000, function (timer) {
-					expect(timer._.remain).to.be.at.most(0);
+					expect(timer.remain).to.be.at.most(0);
 					done();
 				});
 
@@ -232,7 +232,7 @@ describe('timer', function () {
 			it('should call update event listener every 1000ms', function (done) {
 				var called = 0,
 					timer = new Timer(null, null, function (timer) {
-						expect(Math.round(timer._.elapsed / 1000)).to.equal(called);
+						expect(Math.round(timer.elapsed / 1000)).to.equal(called);
 						if (called++ >= 3)
 							done();
 					});
@@ -312,7 +312,6 @@ describe('timer', function () {
 				expect(countToStub.getCall(0).args[0]).to.deep.equal(Datetime.makeDatetime('630am8Aug2014'));
 				expect(countUpStub).to.have.not.be.called;
 			});
-
 		});
 	});
 });

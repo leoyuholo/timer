@@ -2,7 +2,7 @@
 	var root = this;
 
 	var updateTimer = function (timer) {
-		var _ = timer._;
+		var _ = timer;
 
 		_.now = Date.now();
 		_.remain = _.end - _.now;
@@ -44,15 +44,20 @@
 		if ('function' === typeof updateCb)
 			_.events.update.push(updateCb);
 
-		this._ = _;
+		for (var key in _) {
+			this[key] = _[key];
+		}
 
 		updateTimer(this);
 	};
 
 	Timer.prototype.destroy = function() {
-		clearTimeout(this._.timeout);
+		var _ = this;
+
+		if (_.timeout)
+			clearTimeout(_.timeout);
+			_.timeout = '';
 	};
 
-	// TODO: export to module.exports for node.js compatibility
 	root.Timer = Timer;
 }.call(this));
