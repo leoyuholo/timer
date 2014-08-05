@@ -141,7 +141,7 @@
 	Datetime.displayString = function (time, precision, purals) {
 		time = Math.abs(time);
 		precision = precision || 'second';
-		var mapping = {
+		var dhmsMapping = {
 				day: 0,
 				hour: 1,
 				minute: 2,
@@ -165,7 +165,7 @@
 			firstNonZero = 0;
 
 		return dhms.map(function (val, index) {
-			if ((val === 0 && firstNonZero === 0 && index < mapping[precision]) || index > mapping[precision]) {
+			if ((val === 0 && firstNonZero === 0 && index < dhmsMapping[precision]) || index > dhmsMapping[precision]) {
 				return false;
 			} else {
 				firstNonZero = index;
@@ -201,7 +201,7 @@
 				)
 			)
 		)(format);
-	}
+	};
 
 	root.Datetime = Datetime;
 }.call(this));
