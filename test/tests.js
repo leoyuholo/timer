@@ -147,6 +147,16 @@ describe('timer', function () {
 			});
 		});
 
+		describe.only('displayString', function () {
+
+			var displayStringTest = [
+				[[Datetime.makeDatetime('1m2s').getTime()], '1 minute 2 seconds'],
+				[[Datetime.makeDatetime('1h2s').getTime()], '1 hour 0 minutes 2 seconds']
+			];
+
+			test(Datetime.displayString, displayStringTest);
+		});
+
 	});
 
 	describe('Timer', function () {

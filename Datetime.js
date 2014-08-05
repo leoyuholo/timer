@@ -138,5 +138,41 @@
 		}
 	};
 
+	Datetime.displayString = function (time, precision, purals) {
+		time = Math.abs(time);
+		precision = precision || 'second';
+		var mapping = {
+				day: 0,
+				hour: 1,
+				minute: 2,
+				second: 3,
+				millisecond: 4
+			},
+			dhms = [
+				Math.floor(time / 86400000),
+				Math.floor(time / 3600000) % 24,
+				Math.floor(time / 60000) % 60,
+				Math.floor(time / 1000) % 60,
+				time % 1000
+			],
+			dictionary = purals || [
+				['day', 'days'],
+				['hour', 'hours'],
+				['minute', 'minutes'],
+				['second', 'seconds'],
+				['millisecond', 'milliseconds']
+			],
+			firstNonZero = 0;
+
+		return dhms.map(function (val, index) {
+			if ((val === 0 && firstNonZero === 0 && index < mapping[precision]) || index > mapping[precision]) {
+				return false;
+			} else {
+				firstNonZero = index;
+				return val + ' ' + (1 === val ? dictionary[index][0] : dictionary[index][1]);
+			}
+		}).filter(function (str) {return str;}).join(' ');
+	};
+
 	root.Datetime = Datetime;
 }.call(this));
