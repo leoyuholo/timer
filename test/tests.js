@@ -1,5 +1,7 @@
 var expect = chai.expect;
 
+var root = this;
+
 describe('timer', function () {
 
 	describe('datetime', function () {
@@ -268,6 +270,49 @@ describe('timer', function () {
 
 				clock.tick(4999);
 			});
+		});
+	});
+
+	describe('app', function () {
+
+		describe('dispatch', function () {
+
+			var countUpStub,
+				countToStub;
+
+			beforeEach(function () {
+				countUpStub = sinon.stub(app, 'countUp');
+				countToStub = sinon.stub(app, 'countTo');
+			});
+
+			afterEach(function () {
+				countUpStub.restore();
+				countToStub.restore();
+			});
+
+			it('should dispatch to countUp', function () {
+				app.dispatch('');
+
+				expect(countUpStub).to.have.be.calledOnce;
+				expect(countToStub).to.have.not.be.called;
+			});
+
+			it('should dispatch to countTo with now plus dhms', function () {
+				app.dispatch('1m2s');
+
+				expect(countToStub).to.have.be.calledOnce;
+				expect(countToStub.getCall(0).args[0].getTime()).to.within(Date.now() + Datetime.makeDatetime('1m2s').getTime() - 2, Date.now() + Datetime.makeDatetime('1m2s').getTime() + 2);
+				expect(countUpStub).to.have.not.be.called;
+			});
+
+			it('should dispatch to countTo with dt', function () {
+				app.dispatch('630am8Aug2014');
+
+				expect(countToStub).to.have.be.calledOnce;
+				expect(countToStub.getCall(0).args[0]).to.deep.equal(Datetime.makeDatetime('630am8Aug2014'));
+				expect(countUpStub).to.have.not.be.called;
+			});
+
 		});
 	});
 });

@@ -26,7 +26,7 @@
 		} else if (Datetime.isDt(hash)) {
 			app.countTo(Datetime.makeDatetime(hash));
 		} else if (Datetime.isDhms(hash) || Datetime.isCount(hash)) {
-			app.countTo(Date.now() + Datetime.makeDatetime(hash));
+			app.countTo(new Date(Date.now() + Datetime.makeDatetime(hash).getTime()));
 		}
 	};
 
