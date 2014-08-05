@@ -220,24 +220,22 @@ describe('timer', function () {
 
 			this.timeout(5000);
 
-			it('should call end event listener exactly once after 2000ms', function (done) {
-				var timer = new Timer(2000, function (timer) {
-					expect(timer.remain).to.be.at.most(0);
-					done();
-				});
+			it('should call end event listener exactly once after 2000ms', function () {
+				var endCbStub = sinon.stub(),
+					timer = new Timer(2000, endCbStub);
 
 				clock.tick(4999);
+
+				expect(endCbStub).to.be.calledOnce;
 			});
 
 			it('should call update event listener every 1000ms', function (done) {
-				var called = 0,
-					timer = new Timer(null, null, function (timer) {
-						expect(Math.round(timer.elapsed / 1000)).to.equal(called);
-						if (called++ >= 3)
-							done();
-					});
+				var updateCbStub = sinon.stub(),
+					timer = new Timer(null, null, updateCbStub);
 
 				clock.tick(4999);
+
+				expect(updateCbStub.callCount).to.equal(5);
 			});
 		});
 
@@ -245,30 +243,30 @@ describe('timer', function () {
 
 			this.timeout(5000);
 
-			it('should not call end event listener after destroy', function (done) {
-				var called = 0,
-					timer = new Timer(2000, function (timer) {
-						expect(++called).to.equal(0);
-					});
+			it('should not call end event listener after destroy', function () {
+				var endCbStub = sinon.stub(),
+					timer = new Timer(2000, endCbStub);
+
 				timer.destroy();
-				setTimeout(function () {
-					done();
-				}, 2500);
+
+				expect(timer.timeout).to.be.not.ok;
 
 				clock.tick(4999);
+
+				expect(endCbStub).to.not.be.called;
 			});
 
-			it('should not call update event listener after destroy', function (done) {
-				var called = 0,
-					timer = new Timer(null, null, function (timer) {
-						expect(++called).to.equal(1);
-					});
+			it('should not call update event listener after destroy', function () {
+				var updateCbStub = sinon.stub(),
+					timer = new Timer(null, null, updateCbStub);
+
 				timer.destroy();
-				setTimeout(function () {
-					done();
-				}, 1500);
+
+				expect(timer.timeout).to.be.not.ok;
 
 				clock.tick(4999);
+
+				expect(updateCbStub).to.be.calledOnce
 			});
 		});
 	});
