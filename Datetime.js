@@ -174,5 +174,34 @@
 		}).filter(function (str) {return str;}).join(' ');
 	};
 
+	var pad0 = function (n) {
+		return n < 10 ? '0' + n : n;
+	};
+
+	var subFormat = function (pattern, sub, map) {
+		map = map || function (val) {return val;};
+		return function (format) {
+			return format.split(pattern).map(map).join(sub);
+		};
+	};
+
+	Datetime.shortString = function (date, format) {
+		format = format || 'HH:mm:ss';
+		if ('number' === typeof date)
+			date = new Date(date);
+
+		return subFormat('yyyy', date.getFullYear(),
+			subFormat('MM', pad0(date.getMonth() + 1),
+				subFormat('dd', pad0(date.getDate()),
+					subFormat('HH', pad0(date.getHours()),
+						subFormat('mm', pad0(date.getMinutes()),
+							subFormat('ss', pad0(date.getSeconds()))
+						)
+					)
+				)
+			)
+		)(format);
+	}
+
 	root.Datetime = Datetime;
 }.call(this));

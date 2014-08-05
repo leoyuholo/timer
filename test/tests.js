@@ -147,7 +147,7 @@ describe('timer', function () {
 			});
 		});
 
-		describe.only('displayString', function () {
+		describe('displayString', function () {
 
 			var displayStringTest = [
 				[[Datetime.makeDatetime('1m2s').getTime()], '1 minute 2 seconds'],
@@ -155,6 +155,18 @@ describe('timer', function () {
 			];
 
 			test(Datetime.displayString, displayStringTest);
+		});
+
+		describe('shortString', function () {
+
+			var shortStringTest = [
+				[[Datetime.makeDatetime('9pm').getTime()], '21:00:00'],
+				[[Datetime.makeDatetime('930pm').getTime()], '21:30:00'],
+				[[Datetime.makeDatetime('93021am').getTime()], '09:30:21'],
+				[[Datetime.makeDatetime('60302am6Aug2017').getTime(), 'dd/MM/yyyy HH:mm:ss'], '06/08/2017 06:03:02']
+			];
+
+			test(Datetime.shortString, shortStringTest);
 		});
 
 	});
