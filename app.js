@@ -42,14 +42,15 @@
 			}
 		};
 
-		if ($(window).width() <= 600) {
+		if (app.timer && app.timer.overDays) {
+			setDtFormat(Datetime.longDtFormat);
+		} else {
 			setDtFormat(Datetime.shortDtFormat);
+		}
+
+		if ($(window).width() <= 600) {
 			setPurals(Datetime.shortPurals);
 		} else {
-			if (app.timer && app.timer.overDays)
-				setDtFormat(Datetime.longDtFormat);
-			else
-				setDtFormat(Datetime.shortDtFormat);
 			setPurals(Datetime.longPurals);
 		}
 
