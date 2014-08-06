@@ -13,9 +13,9 @@
 		};
 
 		if (_.end <= _.now) {
+			_.ended = true;
 			_.events.end.forEach(trigger);
 			_.events.end = [];
-			_.ended = true;
 		}
 
 		_.events.update.forEach(trigger);
@@ -30,6 +30,8 @@
 			end: 0,
 			remain: 0,
 			elapsed: 0,
+			duration: 0,
+			ended: false,
 			frequency: 1000,
 			events: {
 				end: [],

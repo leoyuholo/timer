@@ -192,8 +192,17 @@ describe('timer', function () {
 				expect(timer.now).to.within(Date.now() - 2, Date.now() + 2);
 				expect(timer.start).to.within(Date.now() - 2, Date.now() + 2);
 				expect(timer.end).to.equal(0);
+				expect(timer.remain).to.equal(0);
+				expect(timer.elapsed).to.equal(0);
 				expect(timer.duration).to.equal(0);
+				expect(timer.ended).to.be.true;
 				expect(timer.frequency).to.equal(1000);
+				expect(timer.events.end).to.be.empty;
+				expect(timer.events.update).to.be.empty;
+
+				clock.tick(2001);
+
+				expect(timer.elapsed).equal(2000);
 			});
 
 			it('should be instantiated with end as now plus 1000ms', function () {
@@ -201,8 +210,16 @@ describe('timer', function () {
 					timer = new Timer(1000, endCb);
 
 				expect(timer.end).to.within(Date.now() + 1000 - 2, Date.now() + 1000 + 2);
+				expect(timer.remain).to.equal(1000);
 				expect(timer.duration).to.equal(1000);
+				expect(timer.ended).to.be.false;
 				expect(timer.events.end).to.include(endCb);
+
+				clock.tick(1001);
+
+				expect(timer.elapsed).to.equal(1000);
+				expect(timer.remain).to.equal(0);
+				expect(timer.ended).to.be.true;
 			});
 
 			it('should be instantiated with end 1030am6Aug2030', function () {
@@ -212,9 +229,17 @@ describe('timer', function () {
 					timer = new Timer(end, endCb, updateCb);
 
 				expect(timer.end).to.within(end.getTime() - 2, end.getTime() + 2);
+				expect(timer.remain).to.equal(end.getTime() - timer.now);
 				expect(timer.duration).to.equal(end.getTime() - timer.start);
+				expect(timer.ended).to.be.false;
 				expect(timer.events.end).to.include(endCb);
 				expect(timer.events.update).to.include(updateCb);
+
+				clock.tick(3001);
+
+				expect(timer.elapsed).to.equal(3000);
+				expect(timer.remain).to.equal(end.getTime() - timer.now);
+				expect(timer.ended).to.be.false;
 			});
 
 			it('should be instantiated with two update envent listener', function () {
@@ -238,6 +263,7 @@ describe('timer', function () {
 				clock.tick(4999);
 
 				expect(endCbStub).to.be.calledOnce;
+				expect(endCbStub.firstCall.args[0].ended).to.be.true;
 			});
 
 			it('should call update event listener every 1000ms', function () {
@@ -262,8 +288,6 @@ describe('timer', function () {
 		});
 
 		describe('destroy', function () {
-
-			this.timeout(5000);
 
 			it('should not call end event listener after destroy', function () {
 				var endCbStub = sinon.stub(),
