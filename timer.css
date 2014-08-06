@@ -2,28 +2,88 @@ body {
 	color: #999;
 	margin: 0 auto;
 	display: table;
-	font-size: 16px;
+	max-width: 90%;
+	min-width: 560px;
 }
+
+@media (max-width: 600px) {
+	body {
+		width: 90%;
+		min-width: 360px;
+	}
+}
+
 #now {
 	font-size: 1em;
-	line-height: 2.5em;
+	padding: 0.6em 0;
 }
-#counter {
+#now > div {
+	display: inline;
+}
+
+#timer {
 	color: #000;
-	font-size: 3em;
 	font-family: arial, sans-serif;
+	padding: 0.6em 0;
 }
+#timer > .timer, #timer > .error{
+	font-size: 3em;
+	margin-right: 0.2em;
+}
+#timer > div {
+	display: inline;
+}
+
+.error > div {
+	display: inline;
+}
+
 #remarks {
 	text-align: right;
 	font-size: 1em;
-	line-height: 2.5em;
+	padding: 1em 0 1em;
 }
-#footer {
+#remarks > div {
+	display: block;
+}
+#remarks > div > div {
+	display: inline;
+}
 
+#footer > p{
+	font-weight: bold;
 }
+
+.toggle {
+	cursor: pointer;
+}
+.toggle-content {
+	display: none;
+}
+
 .subarea {
 	opacity: 0.3;
 }
 body:hover > .subarea {
 	opacity: 1;
+}
+
+.timer, .hash {
+	font-weight: bold;
+}
+.datetime {
+	font-style: italic;
+}
+
+.alarm {
+	background-color: #000;
+}
+.alarm > #timer {
+	color: #999;
+}
+.alarm > .subarea {
+	opacity: 1;
+}
+.alarm .toggle-content {
+	display: block;
 }

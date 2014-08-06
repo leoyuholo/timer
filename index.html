@@ -9,13 +9,31 @@
 		<title>Timer</title>
 		<link rel="stylesheet" type="text/css" href="timer.css">
 	</head>
-	<body id="timer">
-		<div id="now" class="subarea">Now: 00:00:00</div>
-		<div id="counter" class="main">0 seconds elapsed</div>
-		<div id="remarks" class="subarea">started counting at: 00:00:00</div>
-		<div id="footer" class="subarea"></div>
+	<body id="leoyuholo-timer">
+		<div id="now" class="subarea">Now: <div class="now-text datetime">00:00:00</div></div>
+		<div id="timer" class="main"></div>
+		<div id="remarks" class="subarea">
+			<div id="remarks-1"></div>
+			<div id="remarks-2"></div>
+		</div>
+		<div id="footer" class="subarea">
+			<p>For a countdown timer, try:</p>
+			<ul>
+				<li><a href="#5">#5</a> to countdown 5 minutes</li>
+				<li><a href="#1h10m12s">#1h10m12s</a> to countdown 1 hour 10 minutes 12 seconds</li>
+				<li><a href="#515pm">#515pm</a> to countdown to 5:15pm</li>
+				<li><a href="#930am6Jul2015">#930am6Jul2015</a> to countdown to 9:30am 6 July, 2015</li>
+			</ul>
+			<p id="info-toggle" class="toggle">Info</p>
+			<div id="info" class="toggle-content">
+				<ul>
+					<li>Fork me on <a href="http://github.com">GitHub</a></li>
+					<li>Minimalistic design inspired by <a href="http://cd.justinjc.com/">cd.justinjs.com</a></li>
+				</ul>
+			</div>
+		</div>
 	</body>
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script type="text/javascript" src="Datetime.js"></script>
 	<script type="text/javascript" src="Timer.js"></script>
 	<script type="text/javascript" src="app.js"></script>
