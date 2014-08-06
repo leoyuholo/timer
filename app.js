@@ -15,11 +15,15 @@
 
 	};
 
-	app.countUp = function (timer) {
+	app.updateElapsed = function (timer) {
 
 	};
 
-	app.countTo = function (timer) {
+	app.updateRemain = function (timer) {
+
+	};
+
+	app.finishCountTo = function (timer) {
 
 	};
 
@@ -32,16 +36,12 @@
 			app.timer.destroy();
 		
 		if (!hash) {
-			app.timer = new Timer(null, null, app.countUp);
-		} else if (Datetime.isDt(hash)) {
-			app.timer = new Timer(Datetime.makeDatetime(hash), app.countTo, app.updateNow);
-		} else if (Datetime.isDhms(hash)) {
-			app.timer = new Timer(Datetime.makeDatetime(hash).getTime(), app.countTo, app.updateNow);
-		} else if (Datetime.isCount(hash)) {
-			app.timer = new Timer(Datetime.parseCount(hash) * 360000, app.countTo, app.updateNow);
+			app.timer = new Timer(null, null, app.updateElapsed);
+		} else if (Datetime.isParsable(hash)) {
+			app.timer = new Timer(Datetime.makeDatetime(hash).getTime(), app.finishCountTo, app.updateRemain);
 		} else {
 			app.timer = new Timer(null, null, app.updateNow);
-			app.hashError(hash);
+			app.hashError(hash, app.timer);
 		}
 	};
 

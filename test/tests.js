@@ -276,16 +276,18 @@ describe('timer', function () {
 		describe('dispatch', function () {
 
 			var updateNowStub,
-				countUpStub,
-				countToStub,
+				updateElapsedStub,
+				updateRemainStub,
+				finishCountToStub,
 				hashErrorStub,
 				oldTimerStub,
 				timerStub;
 
 			beforeEach(function () {
 				updateNowStub = sinon.stub(app, 'updateNow');
-				countUpStub = sinon.stub(app, 'countUp');
-				countToStub = sinon.stub(app, 'countTo');
+				updateElapsedStub = sinon.stub(app, 'updateElapsed');
+				updateRemainStub = sinon.stub(app, 'updateRemain');
+				finishCountToStub = sinon.stub(app, 'finishCountTo')
 				hashErrorStub = sinon.stub(app, 'hashError');
 				oldTimerStub = sinon.createStubInstance(Timer);
 				app.timer = oldTimerStub;
@@ -294,8 +296,9 @@ describe('timer', function () {
 
 			afterEach(function () {
 				updateNowStub.restore();
-				countUpStub.restore();
-				countToStub.restore();
+				updateElapsedStub.restore();
+				updateRemainStub.restore();
+				finishCountToStub.restore();
 				hashErrorStub.restore();
 				delete app.timer;
 				timerStub.restore();
@@ -316,7 +319,7 @@ describe('timer', function () {
 				
 				expect(timerStub).to.be.calledOnce;
 				expect(timerStub).to.be.calledWithNew;
-				expect(timerStub.firstCall).to.be.calledWith(null, null, countUpStub);
+				expect(timerStub.firstCall).to.be.calledWith(null, null, updateElapsedStub);
 			});
 
 			it('should dispatch to countTo with dhms', function () {
@@ -327,7 +330,7 @@ describe('timer', function () {
 
 				expect(timerStub).to.have.be.calledOnce;
 				expect(timerStub).to.be.calledWithNew;
-				expect(timerStub.firstCall).to.be.calledWith(Datetime.makeDatetime('1m2s').getTime(), countToStub, updateNowStub);
+				expect(timerStub.firstCall).to.be.calledWith(Datetime.makeDatetime('1m2s').getTime(), finishCountToStub, updateRemainStub);
 			});
 
 			it('should dispatch to countTo with dt', function () {
@@ -338,7 +341,7 @@ describe('timer', function () {
 
 				expect(timerStub).to.have.be.calledOnce;
 				expect(timerStub).to.be.calledWithNew;
-				expect(timerStub.firstCall).to.be.calledWith(Datetime.makeDatetime('630am8Aug2014'), countToStub, updateNowStub);
+				expect(timerStub.firstCall).to.be.calledWith(Datetime.makeDatetime('630am8Aug2014').getTime(), finishCountToStub, updateRemainStub);
 			});
 
 			it('should dispatch to countTo with count', function () {
@@ -349,7 +352,7 @@ describe('timer', function () {
 
 				expect(timerStub).to.have.be.calledOnce;
 				expect(timerStub).to.be.calledWithNew;
-				expect(timerStub.firstCall).to.be.calledWith(5 * 360000, countToStub, updateNowStub);
+				expect(timerStub.firstCall).to.be.calledWith(5 * 60000, finishCountToStub, updateRemainStub);
 			});
 
 			it('should dispatch to hashError', function () {
