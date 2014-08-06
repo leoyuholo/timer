@@ -53,13 +53,13 @@
 			setPurals(Datetime.longPurals);
 		}
 
-		if (needUpdateDisplay) {
+		if (needUpdateDisplay && app.timer) {
 			app.updateElapsed(app.timer);
 			app.updateRemain(app.timer);
 			app.updateDuration(app.timer);
 		}
 
-		if (needUpdateShort) {
+		if (needUpdateShort && app.timer) {
 			app.updateNow(app.timer);
 			app.updateStart(app.timer);
 			app.updateEnd(app.timer);
