@@ -12,12 +12,13 @@
 			listener.call(null, timer);
 		};
 
-		_.events.update.forEach(trigger);
-
 		if (_.end <= _.now) {
 			_.events.end.forEach(trigger);
 			_.events.end = [];
+			_.ended = true;
 		}
+
+		_.events.update.forEach(trigger);
 
 		_.timeout = setTimeout(function () {updateTimer(timer);}, _.frequency - (_.elapsed % _.frequency));
 	};

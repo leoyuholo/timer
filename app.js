@@ -197,6 +197,13 @@
 			}
 		});
 
+		window.onbeforeunload = function () {
+			if (app.timer && app.timer.end && !app.timer.ended)
+				return $('#timer').text();
+			else
+				return;
+		};
+
 		app.dispatch(app.getHash());
 	};
 
