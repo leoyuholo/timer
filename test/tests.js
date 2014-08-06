@@ -138,7 +138,7 @@ describe('timer', function () {
 				var now = new Date();
 
 				var makeDatetimeTest = [
-					[['5'], new Date(5 * 60)],
+					[['5'], new Date(5 * 60000)],
 					[['1d12h3m4s'], new Date(129784000)],
 					[['930am6Aug2014'], new Date(2014, 7, 6, 9, 30)],
 					[['930am6Aug'], new Date(now.getFullYear(), 7, 6, 9, 30)],
@@ -165,7 +165,7 @@ describe('timer', function () {
 				[[Datetime.makeDatetime('9pm').getTime()], '21:00:00'],
 				[[Datetime.makeDatetime('930pm').getTime()], '21:30:00'],
 				[[Datetime.makeDatetime('93021am').getTime()], '09:30:21'],
-				[[Datetime.makeDatetime('60302am6Aug2017').getTime(), 'dd/MM/yyyy HH:mm:ss'], '06/08/2017 06:03:02']
+				[[Datetime.makeDatetime('60302am6Aug2017').getTime(), Datetime.longDtFormat], '06/08/2017 06:03:02']
 			];
 
 			test(Datetime.shortString, shortStringTest);

@@ -5,6 +5,11 @@
 
 	};
 
+	Datetime.dayCount = 86400000;
+	Datetime.hourCount = 3600000;
+	Datetime.minuteCount = 60000;
+	Datetime.secondCount = 1000;
+
 	Datetime.dhmsRegex = /^(?:(\d+)d)?(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?$/i;
 
 	Datetime.isDhms = function (s) {
@@ -108,11 +113,11 @@
 	Datetime.makeDatetime = function (s) {
 
 		if (Datetime.isCount(s)) {
-			return new Date(60 * Datetime.parseCount(s));
+			return new Date(Datetime.minuteCount * Datetime.parseCount(s));
 		} else if (Datetime.isDhms(s)) {
 			var dhms = Datetime.parseDhms(s);
 
-			return new Date((86400 * dhms.day + 3600 * dhms.hour + 60 * dhms.minute + dhms.second) * 1000);
+			return new Date(Datetime.dayCount * dhms.day + Datetime.hourCount * dhms.hour + Datetime.minuteCount * dhms.minute + Datetime.secondCount * dhms.second);
 		} else if (Datetime.isDt(s)) {
 			var dt = Datetime.parseDt(s),
 				now = new Date();
@@ -149,10 +154,10 @@
 				millisecond: 4
 			},
 			dhms = [
-				Math.floor(time / 86400000),
-				Math.floor(time / 3600000) % 24,
-				Math.floor(time / 60000) % 60,
-				Math.floor(time / 1000) % 60,
+				Math.floor(time / Datetime.dayCount),
+				Math.floor(time / Datetime.hourCount) % 24,
+				Math.floor(time / Datetime.minuteCount) % 60,
+				Math.floor(time / Datetime.secondCount) % 60,
 				time % 1000
 			],
 			dictionary = purals || [
@@ -174,6 +179,9 @@
 		}).filter(function (str) {return str;}).join(' ');
 	};
 
+	Datetime.shortDtFormat = 'HH:mm:ss';
+	Datetime.longDtFormat = 'dd/MM/yyyy HH:mm:ss';
+
 	var pad0 = function (n) {
 		return n < 10 ? '0' + n : n;
 	};
@@ -186,7 +194,7 @@
 	};
 
 	Datetime.shortString = function (date, format) {
-		format = format || 'HH:mm:ss';
+		format = format || Datetime.shortDtFormat;
 		if ('number' === typeof date)
 			date = new Date(date);
 
