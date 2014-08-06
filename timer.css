@@ -6,14 +6,14 @@ body {
 	margin: 0 auto;
 	display: table;
 	max-width: 90%;
-	min-width: 560px;
+	min-width: 35em;
 	height: 100%;
 }
 
 @media (max-width: 600px) {
 	body {
 		width: 90%;
-		min-width: 360px;
+		min-width: 0;
 	}
 }
 
