@@ -186,12 +186,13 @@
 			app.dispatch(app.getHash());
 		};
 
+		var lastWidth = $(window).width();
 		$(window).resize(function () {
-			app.updateFormat();
-		});
-
-		$('.toggle').click(function () {
-			$(this).next().toggle(0);
+			var width = $(window).width();
+			if ((lastWidth > 600 && width <= 600) || (lastWidth <= 600 && width > 600)) {
+				lastWidth = width;
+				app.updateFormat();
+			}
 		});
 
 		app.dispatch(app.getHash());

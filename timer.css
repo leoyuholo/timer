@@ -1,9 +1,13 @@
+html {
+	height: 100%;
+}
 body {
 	color: #999;
 	margin: 0 auto;
 	display: table;
 	max-width: 90%;
 	min-width: 560px;
+	height: 100%;
 }
 
 @media (max-width: 600px) {
@@ -52,13 +56,6 @@ body {
 
 #footer > p{
 	font-weight: bold;
-}
-
-.toggle {
-	cursor: pointer;
-}
-.toggle-content {
-	display: none;
 }
 
 .subarea {
