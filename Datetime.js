@@ -159,17 +159,18 @@
 		['millisecond', 'milliseconds']
 	];
 
-	Datetime.displayString = function (time, precision, purals) {
+	var dhmsMapping = {
+		day: 0,
+		hour: 1,
+		minute: 2,
+		second: 3,
+		millisecond: 4
+	}
+
+	Datetime.displayString = function (time, precision, purals, skipZero) {
 		time = Math.abs(time);
 		precision = precision || 'second';
-		var dhmsMapping = {
-				day: 0,
-				hour: 1,
-				minute: 2,
-				second: 3,
-				millisecond: 4
-			},
-			dhms = [
+		var dhms = [
 				Math.floor(time / Datetime.dayCount),
 				Math.floor(time / Datetime.hourCount) % 24,
 				Math.floor(time / Datetime.minuteCount) % 60,
@@ -180,7 +181,7 @@
 			firstNonZero = 0;
 
 		return dhms.map(function (val, index) {
-			if ((val === 0 && firstNonZero === 0 && index < dhmsMapping[precision]) || index > dhmsMapping[precision]) {
+			if ((skipZero && 0 === val) || (0 === val && 0 === firstNonZero && index < dhmsMapping[precision]) || index > dhmsMapping[precision]) {
 				return false;
 			} else {
 				firstNonZero = index;

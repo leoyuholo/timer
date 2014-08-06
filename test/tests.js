@@ -149,11 +149,14 @@ describe('timer', function () {
 			});
 		});
 
-		describe('displayString', function () {
+		describe.only('displayString', function () {
 
 			var displayStringTest = [
 				[[Datetime.makeDatetime('1m2s').getTime()], '1 minute 2 seconds'],
-				[[Datetime.makeDatetime('1h2s').getTime()], '1 hour 0 minutes 2 seconds']
+				[[Datetime.makeDatetime('1h2s').getTime()], '1 hour 0 minutes 2 seconds'],
+				[[Datetime.makeDatetime('2m3s').getTime(), 'minute'], '2 minutes'],
+				[[Datetime.makeDatetime('2m3s').getTime(), 'second', Datetime.shortPurals], '2 m 3 s'],
+				[[Datetime.makeDatetime('22h13s').getTime(), 'second', Datetime.longPurals, true], '22 hours 13 seconds'],
 			];
 
 			test(Datetime.displayString, displayStringTest);
