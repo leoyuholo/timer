@@ -143,6 +143,22 @@
 		}
 	};
 
+	Datetime.shortPurals = [
+		['d', 'd'],
+		['h', 'h'],
+		['m', 'm'],
+		['s', 's'],
+		['ms', 'ms']
+	];
+
+	Datetime.longPurals = [
+		['day', 'days'],
+		['hour', 'hours'],
+		['minute', 'minutes'],
+		['second', 'seconds'],
+		['millisecond', 'milliseconds']
+	];
+
 	Datetime.displayString = function (time, precision, purals) {
 		time = Math.abs(time);
 		precision = precision || 'second';
@@ -160,13 +176,7 @@
 				Math.floor(time / Datetime.secondCount) % 60,
 				time % 1000
 			],
-			dictionary = purals || [
-				['day', 'days'],
-				['hour', 'hours'],
-				['minute', 'minutes'],
-				['second', 'seconds'],
-				['millisecond', 'milliseconds']
-			],
+			purals = purals || Datetime.longPurals,
 			firstNonZero = 0;
 
 		return dhms.map(function (val, index) {
@@ -174,7 +184,7 @@
 				return false;
 			} else {
 				firstNonZero = index;
-				return val + ' ' + (1 === val ? dictionary[index][0] : dictionary[index][1]);
+				return val + ' ' + (1 === val ? purals[index][0] : purals[index][1]);
 			}
 		}).filter(function (str) {return str;}).join(' ');
 	};
