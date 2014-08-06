@@ -185,7 +185,7 @@ describe('timer', function () {
 			clock.restore();
 		});
 
-		describe('constructor', function () {
+		describe.only('constructor', function () {
 
 			it('should be instantiated with default properties', function () {
 				var timer = new Timer();
@@ -193,6 +193,7 @@ describe('timer', function () {
 				expect(timer.now).to.within(Date.now() - 2, Date.now() + 2);
 				expect(timer.start).to.within(Date.now() - 2, Date.now() + 2);
 				expect(timer.end).to.equal(0);
+				expect(timer.duration).to.equal(0);
 				expect(timer.frequency).to.equal(1000);
 			});
 
@@ -201,6 +202,7 @@ describe('timer', function () {
 					timer = new Timer(1000, endCb);
 
 				expect(timer.end).to.within(Date.now() + 1000 - 2, Date.now() + 1000 + 2);
+				expect(timer.duration).to.equal(1000);
 				expect(timer.events.end).to.include(endCb);
 			});
 
@@ -211,8 +213,18 @@ describe('timer', function () {
 					timer = new Timer(end, endCb, updateCb);
 
 				expect(timer.end).to.within(end.getTime() - 2, end.getTime() + 2);
+				expect(timer.duration).to.equal(end.getTime() - timer.start);
 				expect(timer.events.end).to.include(endCb);
 				expect(timer.events.update).to.include(updateCb);
+			});
+
+			it('should be instantiated with two update envent listener', function () {
+				var updateCb = function (timer) {},
+					updateCb2 = function (timer) {},
+					timer = new Timer(null, null, updateCb, updateCb2);
+
+				expect(timer.events.update).to.include(updateCb);
+				expect(timer.events.update).to.include(updateCb2);
 			});
 		});
 
