@@ -149,6 +149,7 @@
 		$('#remarks-2').html('You are now ' + app.remainTextHtml + ' late.');
 
 		app.updateDuration(timer);
+		app.updateRemain(timer);
 
 		$('body').addClass('alarm');
 	};
