@@ -108,7 +108,7 @@
 	app.endTextHtml = '<div class="end-text datetime"></div>';
 
 	app.countUp = function () {
-		$('#timer').html(app.elapsedTextHtml + ' remains');
+		$('#timer').html(app.elapsedTextHtml + ' elapsed');
 		$('#remarks-1').html('started counting at ' + app.startTextHtml);
 
 		app.timer = new Timer(null, null, app.updateNow, app.updateElapsed);
