@@ -36,9 +36,9 @@
 			app.timer.destroy();
 		
 		if (!hash) {
-			app.timer = new Timer(null, null, app.updateElapsed);
+			app.timer = new Timer(null, null, app.updateNow, app.updateElapsed);
 		} else if (Datetime.isParsable(hash)) {
-			app.timer = new Timer(Datetime.makeDatetime(hash).getTime(), app.finishCountTo, app.updateRemain);
+			app.timer = new Timer(Datetime.makeDatetime(hash).getTime(), app.finishCountTo, app.updateNow, app.updateRemain);
 		} else {
 			app.timer = new Timer(null, null, app.updateNow);
 			app.hashError(hash, app.timer);
