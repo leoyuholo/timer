@@ -131,9 +131,7 @@
 				testDate.setHours(dt.hour);
 				testDate.setMinutes(dt.minute);
 				testDate.setSeconds(dt.second);
-				if (testDate < now) {
-					dt.day = now.getDate() + 1;
-				}
+				dt.day = testDate < now ? now.getDate() + 1 : now.getDate();
 				dt.month = now.getMonth();
 			}
 
@@ -143,7 +141,7 @@
 		}
 	};
 
-	Datetime.shortPurals = [
+	Datetime.shortPlurals = [
 		['d', 'd'],
 		['h', 'h'],
 		['m', 'm'],
@@ -151,7 +149,7 @@
 		['ms', 'ms']
 	];
 
-	Datetime.longPurals = [
+	Datetime.longPlurals = [
 		['day', 'days'],
 		['hour', 'hours'],
 		['minute', 'minutes'],
@@ -167,7 +165,7 @@
 		millisecond: 4
 	}
 
-	Datetime.displayString = function (time, precision, purals, skipZero) {
+	Datetime.displayString = function (time, precision, plurals, skipZero) {
 		time = Math.abs(time);
 		precision = precision || 'second';
 		var dhms = [
@@ -177,7 +175,7 @@
 				Math.floor(time / Datetime.secondCount) % 60,
 				time % 1000
 			],
-			purals = purals || Datetime.longPurals,
+			plurals = plurals || Datetime.longPlurals,
 			firstNonZero = 0;
 
 		return dhms.map(function (val, index) {
@@ -185,7 +183,7 @@
 				return false;
 			} else {
 				firstNonZero = index;
-				return val + ' ' + (1 === val ? purals[index][0] : purals[index][1]);
+				return val + ' ' + (1 === val ? plurals[index][0] : plurals[index][1]);
 			}
 		}).filter(function (str) {return str;}).join(' ');
 	};

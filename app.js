@@ -12,11 +12,11 @@
 	};
 
 	app.dtFormat = Datetime.shortDtFormat;
-	app.purals = Datetime.longPurals;
+	app.plurals = Datetime.longPlurals;
 	app.precision = 'second';
 
 	app.displayString = function (time, skipZero) {
-		return Datetime.displayString(time, app.precision, app.purals, skipZero);
+		return Datetime.displayString(time, app.precision, app.plurals, skipZero);
 	};
 
 	app.shortString = function (time) {
@@ -35,10 +35,10 @@
 			}
 		};
 
-		var setPurals = function (newPurals) {
-			if (app.purals !== newPurals) {
+		var setPlurals = function (newPlurals) {
+			if (app.plurals !== newPlurals) {
 				needUpdateDisplay = true;
-				app.purals = newPurals;
+				app.plurals = newPlurals;
 			}
 		};
 
@@ -49,9 +49,9 @@
 		}
 
 		if ($(window).width() <= 600) {
-			setPurals(Datetime.shortPurals);
+			setPlurals(Datetime.shortPlurals);
 		} else {
-			setPurals(Datetime.longPurals);
+			setPlurals(Datetime.longPlurals);
 		}
 
 		if (needUpdateDisplay && app.timer) {
