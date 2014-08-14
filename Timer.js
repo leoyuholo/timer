@@ -4,7 +4,7 @@
 	var updateTimer = function (timer) {
 		var _ = timer;
 
-		_.now = Date.now();
+		_.now = (new Date).getTime();
 		_.remain = _.end - _.now;
 		_.elapsed = _.now - _.start;
 
@@ -25,8 +25,8 @@
 
 	var Timer = function (end, endCb, updateCb, updateCb2) {
 		var _ = {
-			now: Date.now(),
-			start: Date.now(),
+			now: (new Date).getTime(),
+			start: (new Date).getTime(),
 			end: 0,
 			remain: 0,
 			elapsed: 0,

@@ -33,9 +33,38 @@
 			</ul>
 		</div>
 	</body>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<!-- for compatibility with old IE -->
+	<script>
+		if (!('forEach' in Array.prototype)) {
+			Array.prototype.forEach= function(action, that /*opt*/) {
+				for (var i= 0, n= this.length; i<n; i++)
+					if (i in this)
+						action.call(that, this[i], i, this);
+			};
+		}
+		if (!('map' in Array.prototype)) {
+			Array.prototype.map= function(mapper, that /*opt*/) {
+				var other= new Array(this.length);
+				for (var i= 0, n= this.length; i<n; i++)
+					if (i in this)
+						other[i]= mapper.call(that, this[i], i, this);
+				return other;
+			};
+		}
+		if (!('filter' in Array.prototype)) {
+			Array.prototype.filter= function(filter, that /*opt*/) {
+				var other= [], v;
+				for (var i=0, n= this.length; i<n; i++)
+					if (i in this && filter.call(that, v= this[i], i, this))
+						other.push(v);
+				return other;
+			};
+		}
+	</script>
 	<script type="text/javascript" src="Datetime.js"></script>
 	<script type="text/javascript" src="Timer.js"></script>
 	<script type="text/javascript" src="app.js"></script>
 	<script type="text/javascript">app.main();</script>
+	<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-53833237-1', 'auto');ga('send', 'pageview');</script>
 </html>
