@@ -58,13 +58,6 @@ body {
 	font-weight: bold;
 }
 
-.subarea {
-	opacity: 0.3;
-}
-body:hover > .subarea {
-	opacity: 1;
-}
-
 .timer, .hash {
 	font-weight: bold;
 }
